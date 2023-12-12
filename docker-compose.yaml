@@ -2,8 +2,14 @@ version: "3.9"
 services:
   sport-classification-model:
     image: sport-classification-model:v1
+    build:
+      context: ./model
+      dockerfile: model_image.dockerfile      
   sport-classification-gateway:
     image: sport-classification-gateway:v1
+    build:
+      context: ./gateway
+      dockerfile: gateway_image.dockerfile      
     environment:
       - TF_SERVING_HOST=sport-classification-model:8500
     ports:
