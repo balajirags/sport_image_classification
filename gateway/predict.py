@@ -8,11 +8,12 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 from proto import np_to_protobuf
+import os
 
 app = Flask("gateway")
 
-#host = os.getenv('TF_SERVING_HOST', 'localhost:8500')
-host = "localhost:8500"
+host = os.getenv('TF_SERVING_HOST', 'localhost:8500')
+#host = "localhost:8500"
 preprocessor = create_preprocessor('inception_v3', target_size=(299,299))
 
 channel = grpc.insecure_channel(host)
@@ -48,6 +49,10 @@ def predict_api():
     url = data['url']
     response = predict(url)
     return jsonify(response)
+
+@app.route('/ping', methods=['GET'])
+def ping_api():
+    return 'pong'
 
 
 if __name__ == '__main__':
