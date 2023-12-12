@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-tensorflow = "*"
 tensorflow-serving-api = "*"
 keras-image-helper = "*"
 numpy = "*"
 grpcio = "*"
 flask = "*"
 requests = "*"
+tensorflow-protobuf = "*"
 
 [dev-packages]
 

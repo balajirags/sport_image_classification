@@ -7,6 +7,7 @@ from keras_image_helper import create_preprocessor
 from flask import Flask
 from flask import request
 from flask import jsonify
+from proto import np_to_protobuf
 
 app = Flask("gateway")
 
@@ -20,7 +21,8 @@ labels = ['Badminton', 'Cricket', 'Karate', 'Soccer', 'Swimming', 'Tennis', 'Wre
     
 def create_request(url):
     X = preprocessor.from_url(url)
-    x_proto = tf.make_tensor_proto(X, shape=X.shape)
+    #x_proto = tf.make_tensor_proto(X, shape=X.shape)
+    x_proto =  np_to_protobuf(X)   
     pbrequest = predict_pb2.PredictRequest()
     pbrequest.model_spec.name = 'sport-classification-model'
     pbrequest.inputs['input_7'].CopyFrom(x_proto)
