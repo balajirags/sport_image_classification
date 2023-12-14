@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sports-class-model-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sports-class-model
+  template:
+    metadata:
+      labels:
+        app: sports-class-model
+    spec:
+      containers:
+      - name: sports-class-model-pod
+        image: sport-classification-model:v1
+        resources:
+          limits:
+            memory: "2G"
+            cpu: "1.0"
+        ports:
+        - containerPort: 8500

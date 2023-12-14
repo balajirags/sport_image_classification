@@ -56,7 +56,7 @@ def ping_api():
 
 
 if __name__ == '__main__':
-    #url = 'https://i.pinimg.com/originals/50/c3/16/50c3163dfff9f2e7252f3d40e2d7f571.jpg'
+    #url = 'https://wallpaperheart.com/wp-content/uploads/2018/03/Cricket-wallpapers.jpg'
     #response = predict(url)
     #print(response)
     app.run(debug=True, host='0.0.0.0', port=9696)

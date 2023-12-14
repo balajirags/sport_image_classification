@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sports-gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sports-gateway
+  template:
+    metadata:
+      labels:
+        app: sports-gateway
+    spec:
+      containers:
+      - name: sports-gateway-pod
+        image: sport-classification-gateway:v1
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9696
+        env:
+        - name: TF_SERVING_HOST
+          value: sports-class-model-service.default.svc.cluster.local:8500
