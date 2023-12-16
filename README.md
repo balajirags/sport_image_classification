@@ -75,14 +75,20 @@ run `./predict_test.sh`
   ```
 
 
-## Cloud Deployment ##
+## AWS Cloud Deployment ##
 
-Both the Gateway and the Model is deployed on AWS EKS cluster.
+Both the Gateway and the Model is  deployed on AWS EKS cluster.
 
 The gateway is available for testing 
-url:`https://somethinghost:9696/ping`
+hostname:`a1192352e2f8a43ca8923f350baf8983-1337907194.us-east-2.elb.amazonaws.com`
 
-you can test the application by running predict_test.py or curl (post modification of the host to `https://somethinghost:9696`)
+you can test the application  deployed on AWS Cluster running 
+
+```
+./predict_test.sh a1192352e2f8a43ca8923f350baf8983-1337907194.us-east-2.elb.amazonaws.com <<image_url>>
+```
+
+
 
 
 ## gateway Service API ##
@@ -109,5 +115,13 @@ Sample Response for '/predict'
 }
 ```
 
+## Training the model from scratch ##
+The trained model is already checked into the repos under `model` directory along with the notebooks used for training and testing. Incase you want to do from scratch follow below steps
 
+1. `cd into trainer` directory
+2. `pipenv install`
+3. `pipenv shell`
+4. `python3 ./train_model.py` - Running this code saves the .h5 model with highest accuracy. 
+5.  `python3 ./convert_model.py` - converts to tensor saved model format.
+6. Note: verify `h5_model_name` & `tensor_model_name` in `convert_model.py` before running.
 

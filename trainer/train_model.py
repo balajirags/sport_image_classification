@@ -73,7 +73,7 @@ def create_checkpoint():
 def train_model(learning_rate, inner_layer_size, droprate):
     checkpoint = create_checkpoint()
     model = make_model(learning_rate, inner_layer_size, droprate)
-    model.fit(train_ds, epochs=1, validation_data=val_ds, callbacks=[checkpoint])
+    model.fit(train_ds, epochs=10, validation_data=val_ds, callbacks=[checkpoint])
     return model
 
 def predict(img, model):

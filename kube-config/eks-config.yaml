@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: sports-classification-eks
+  name: sports-classification-cluster
   region: us-east-2
 
 nodeGroups:
