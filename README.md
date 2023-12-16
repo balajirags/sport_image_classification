@@ -73,8 +73,14 @@ run `./predict_test.sh`
   --header 'Content-Type: application/json' \
   --data '{"url": <<image url>>}'
   ```
+`<<image url>>` -  any image url from internet
 
-
+### Sample Images for testing ###
+```Shell
+http://bit.ly/3RtIOTq
+https://bit.ly/3GMDW6T
+https://bit.ly/48nRO3l
+```
 ## AWS Cloud Deployment ##
 
 Both the Gateway and the Model is  deployed on AWS EKS cluster.

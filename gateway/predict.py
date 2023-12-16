@@ -55,7 +55,6 @@ def handle_error(e, code):
 def predict_api():
     try:
         data = request.get_json()
-        show_probability = request.args.get('show_probability')
         if 'url' not in data:
             return handle_error('url is required', 400)
         url = data['url']
