@@ -1,9 +1,17 @@
 import requests
 
-url = 'http://localhost:9696/predict'
-#url = 'http://a4e21e7898c7b48daace6ac39c2e813c-912773252.us-east-2.elb.amazonaws.com:9696/predict'
-data = {'url': 'https://www.athletico.com/blog2/wp-content/uploads/2012/07/Istock-swimmer-032410.jpg'}
+server_url = 'http://localhost:9696/predict'
+#server_url = 'http://localhost:9696/predict?show_probability=true'
 
-result = requests.post(url, json=data).json()
+data = {'url': 'https://www.martialtribes.com/wp-content/uploads/2017/07/karate-sparring.jpg'}
+
+result = requests.post(server_url, json=data).json()
 
 print(result)
+
+
+
+### TEST IMAGES ###
+#karate - https://www.martialtribes.com/wp-content/uploads/2017/07/karate-sparring.jpg
+
+#image which is blocked - https://wallpapercave.com/wp/wp3088699.jpg

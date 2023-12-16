@@ -5,10 +5,12 @@ from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 from keras_image_helper import create_preprocessor
 from flask import Flask
+from flask import abort
 from flask import request
 from flask import jsonify
 from proto import np_to_protobuf
 import os
+from urllib.error import HTTPError
 
 app = Flask("gateway")
 
@@ -43,17 +45,41 @@ def predict(url):
     pb_response = stub.Predict(pbrequest, timeout=10)
     return decode_response(pb_response)
 
+def predict_with_details(url):
+    pbrequest = create_request(url)
+    pb_response = stub.Predict(pbrequest, timeout=10)
+    return decode_response_detail(pb_response)
+
+def handle_error(e, code):
+    return jsonify({
+            'status': 'error',
+            'message': f'{e}'
+        }), code 
+
 @app.route('/predict', methods=['POST'])
 def predict_api():
-    data = request.get_json()
-    url = data['url']
-    response = predict(url)
-    return jsonify(response)
-
+    try:
+        data = request.get_json()
+        show_probability = request.args.get('show_probability')
+        if 'url' not in data:
+            return handle_error('url is required', 400)
+        url = data['url']
+        if show_probability:
+            response = predict_with_details(url)
+        else:
+            response = predict(url)
+        return jsonify({
+            'result': response
+            }), 200  
+    except HTTPError as err:
+        print(err.code) 
+        return handle_error(err,err.code)
+    except Exception as e:
+        return handle_error(e,500)
+    
 @app.route('/ping', methods=['GET'])
 def ping_api():
     return 'pong'
-
 
 if __name__ == '__main__':
     #url = 'https://wallpaperheart.com/wp-content/uploads/2018/03/Cricket-wallpapers.jpg'
