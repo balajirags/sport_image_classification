@@ -90,8 +90,24 @@ you can test the application by running predict_test.py or curl (post modificati
 API  | Description | Response | Response-type
 ------------- | ------------- | -------------  | -------------
 `/ping` | ping api to check the status | pong | String
-`/predict`| Return the prediction of the classification| one of sports class- example `cricket`  | Json
-`/predict?show_probability=true` | shows probability for all classes | hash containing all classes and their probabilities | json 
+`/predict`| Return the prediction of the classification|  check below sample | Json
+
+
+Sample Response for '/predict'
+```JSON
+{
+  "prediction": "Karate",
+  "probability_percentage": {
+    "Badminton": 1.887187517368716e-09,
+    "Cricket": 8.943498869484756e-06,
+    "Karate": 0.9999909400939941,
+    "Soccer": 1.0174683495733916e-07,
+    "Swimming": 3.659216159246359e-12,
+    "Tennis": 2.4010535781826547e-09,
+    "Wrestling": 1.1995511250972868e-09
+  }
+}
+```
 
 
 

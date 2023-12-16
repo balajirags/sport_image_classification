@@ -15,7 +15,6 @@ from urllib.error import HTTPError
 app = Flask("gateway")
 
 host = os.getenv('TF_SERVING_HOST', 'localhost:8500')
-#host = "localhost:8500"
 preprocessor = create_preprocessor('inception_v3', target_size=(299,299))
 
 channel = grpc.insecure_channel(host)
@@ -24,7 +23,6 @@ labels = ['Badminton', 'Cricket', 'Karate', 'Soccer', 'Swimming', 'Tennis', 'Wre
     
 def create_request(url):
     X = preprocessor.from_url(url)
-    #x_proto = tf.make_tensor_proto(X, shape=X.shape)
     x_proto =  np_to_protobuf(X)   
     pbrequest = predict_pb2.PredictRequest()
     pbrequest.model_spec.name = 'sport-classification-model'
@@ -43,12 +41,9 @@ def decode_response_detail(pb_response):
 def predict(url):
     pbrequest = create_request(url)
     pb_response = stub.Predict(pbrequest, timeout=10)
-    return decode_response(pb_response)
-
-def predict_with_details(url):
-    pbrequest = create_request(url)
-    pb_response = stub.Predict(pbrequest, timeout=10)
-    return decode_response_detail(pb_response)
+    probability_result = decode_response_detail(pb_response)
+    prediction_result = decode_response(pb_response)
+    return (prediction_result, probability_result)
 
 def handle_error(e, code):
     return jsonify({
@@ -64,12 +59,10 @@ def predict_api():
         if 'url' not in data:
             return handle_error('url is required', 400)
         url = data['url']
-        if show_probability:
-            response = predict_with_details(url)
-        else:
-            response = predict(url)
+        prediction_result,probability_result = predict(url)
         return jsonify({
-            'result': response
+            'prediction': prediction_result,
+            'probability_percentage': probability_result
             }), 200  
     except HTTPError as err:
         print(err.code) 
