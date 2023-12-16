@@ -13,14 +13,16 @@ create_gateway_image() {
 }
 
 create_kind_cluster() {
-  echo "Creating local Kubernetes cluster..."
-  kind create cluster --name sports-classification-cluster
-  echo "Local Kubernetes cluster created."
+  local name="$1"
+  echo "Creating local Kubernetes cluster... $name"
+  kind create cluster --name $name
+  echo "Local Kubernetes cluster created with name $name."
 }
 
 load_images_to_kind_cluster() {
+  local name="$1"
   echo "Loading images to Kind repository..."
-  kind load docker-image sport-classification-gateway:v1 sport-classification-model:v1 --name sports-classification-cluster
+  kind load docker-image sport-classification-gateway:v1 sport-classification-model:v1 --name $name
   echo "Images loaded to Kind repository."
 }
 
@@ -39,13 +41,17 @@ deploy_gateway() {
 }
 
 main() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: $0 <cluster-name>"
+    exit 1
+  fi
   echo "Starting deployment to local Kubernetes cluster..."
 
   create_model_image
   create_gateway_image
 
-  create_kind_cluster
-  load_images_to_kind_cluster
+  create_kind_cluster "$1"
+  load_images_to_kind_cluster "$1"
 
   deploy_model
   deploy_gateway
@@ -54,4 +60,4 @@ main() {
 }
 
 # Execute the main function
-main
+main "$@"

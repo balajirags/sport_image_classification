@@ -8,7 +8,7 @@ make_prediction_request() {
   echo "Making prediction request to http://$gateway_host:9696/predict..."
 
   curl --request POST \
-    --url "http://$gateway_host:9696/predict" \
+    --url "http://$gateway_host:9696/predict?show_probability=true" \
     --header 'Content-Type: application/json' \
     --data "{\"url\": \"$image_url\"}"
 

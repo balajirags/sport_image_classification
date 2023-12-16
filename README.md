@@ -45,14 +45,15 @@ Use `pipenv install` to install dependencies from respective directories, Only i
 
 ## How to run locally with Docker compose ##
 1.  Clone this repo
-2. `git pull lfs` . The trained model is saved in the `model` directory already.
+2.  Install [git-lfs]((https://git-lfs.com/)). 
+2. `git lfs pull`.(The trained model is saved in the `model` directory already)
 3. `docker-compose up`
-5.  check if the containers is up
+5.  check if the containers is up `docker ps`
 
 
 ## How to run on local kubernetes ##
 1. Ensure [`kind`](https://kind.sigs.k8s.io/) kubernetes in installed
-2. run `./deploy-local-kube.sh`
+2. run `./deploy-local-kube.sh <cluster-name>`
 3. `kubectl port-forward services/sports-gateway-service 9696:9696`
 
 ## Testing with python script ##
